@@ -1,29 +1,13 @@
-// import type { HelloWorldRPC } from './types'
+import type { HelloWorldRPC } from './types'
 
-interface GenericRPCHandler<T extends GenericRPCHandlerFunction> {
-  (name: T['method'], params: T['params']): T['result']
+interface Handle<T extends GenericRPCHandlerFunction> {
+  (params: T['params'], method: T['method']): T['result']
 }
 
 interface GenericRPCHandlerFunction {
   method: string
   params: Object
   result: Object
-}
-
-interface GenericRPC {
-  method: string
-  params: any
-  result: any
-}
-
-type HelloWorldRPC = {
-  method: 'hello'
-  params: {
-    world: string
-  }
-  result: {
-    message: string
-  }
 }
 
 type RPCResponse<R> = {
@@ -46,51 +30,42 @@ interface RPCError {
 //   return { message: `Hello, ${params.world}!` }
 // }
 
-const Call = async <T extends GenericRPC>(
-  method: T['method'],
-  params: T['params']
-): Promise<T['result']> => {
-  try {
-    const response = await fetch(`http://localhost:3000/rpc/${method}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params),
-    })
-    const json = await response.json()
-    return json
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-const helloWorldResult = Call<HelloWorldRPC>('hello', { world: 'Neptune' })
-
-const HelloWorldHandler: GenericRPCHandler<HelloWorldRPC> = (method, params) => {
+const HelloWorldHandler: Handle<HelloWorldRPC> = (params) => {
   return { message: `Hello ${params.world}` }
 }
 
-const http = require('http')
+const RPCHandlers: { [key: string]: Handle<any> } = {
+  hello: HelloWorldHandler,
+}
 
-const RPCListener = async (req, res) => {
-  const body = await req.body()
-  const json = await body.json()
+import * as express from 'express'
+const cors = require('cors')
+const app = express()
+app.use(cors())
+app.use(express.json())
 
-  if (json.method === 'hello') {
-    const result = HelloWorldHandler(json.method, json.params)
+// const addRPCHandler = (method: string, handler: GenericRPCHandler<any>) => {
+//   RPCHandlers[method] = handler
+// }
+
+const RPCListener = async (req: express.Request, res: express.Response) => {
+  console.log('RPCListener')
+  const body = req.body
+
+  if (body.method in RPCHandlers) {
+    // const result = HelloWorldHandler(body.method, body.params)
+    const result = RPCHandlers[body.method](body.method, body.params)
+    console.log('result', result)
     res.statusCode = 200
-    res.send(result)
+    res.json(result)
   } else {
     res.statusCode = 404
-    res.send({ error: { code: -32601, message: 'Method not found' } })
+    res.json({ error: { code: -32601, message: 'Method not found' } })
   }
 }
 
-// const requestListener = function (req, res) {
-//   res.writeHead(200)
-//   res.end('Hello, World!')
-// }
+app.post('/', RPCListener)
 
-const server = http.createServer(RPCListener)
-server.listen(8080)
+app.listen(3000, () => {
+  console.log(`Example app listening at http://localhost:${3000}`)
+})
