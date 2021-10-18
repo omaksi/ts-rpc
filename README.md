@@ -3,7 +3,7 @@
 ts-rpc is a simple RPC library written in TypeScript with support for sharing types between the client and server.
 
 ```
-yarn add ts-rpc
+yarn add @omaksi/ts-rpc
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ type HelloWorldRPC = {
 }
 ```
 
-Server:
+Server (express middleware)
 ```typescript
 const rpcHandlerMiddleware = RpcHandlerMiddleware({
   hello: Handle<HelloWorldRPC> = (params) => ({ 

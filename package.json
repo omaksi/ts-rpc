@@ -1,31 +1,14 @@
 {
-  "name": "ts-rpc",
-  "version": "1.0.0",
+  "name": "@omaksi/ts-rpc",
+  "version": "0.0.1",
   "main": "index.js",
+  "repository": "https://github.com/omaksi/ts-rpc.git",
   "author": "Ondrej Maksi <ondrej.maksi@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "@types/cors": "^2.8.12",
-    "@types/express": "^4.17.13",
-    "@types/node": "^16.11.1",
-    "@types/react": "^17.0.30",
-    "@types/react-dom": "^17.0.9",
-    "cors": "^2.8.5",
-    "esbuild": "^0.13.8",
-    "express": "^4.17.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "typescript": "^4.4.4"
-  },
   "scripts": {
-    "build-server": "esbuild ./example/server/index.ts --bundle --outfile=./example/server/index.js --platform=node",
-    "build-client": "esbuild ./example/client/client.tsx --bundle --outfile=./example/client/client.js",
-    "serve-client": "http-server ./example/client/",
-    "start": "node index.js",
-    "dev": "ts-node-dev ./example/server/index.ts"
+    "build": "esbuild ./lib/lib.ts --bundle --outfile=./index.js"
   },
   "devDependencies": {
-    "http-server": "^13.0.2",
-    "ts-node-dev": "^1.1.8"
+    "esbuild": "^0.13.8"
   }
 }

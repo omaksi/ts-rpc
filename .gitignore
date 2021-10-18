@@ -1,2 +1,4 @@
 node_modules
 example/client/client.js
+example/server/index.js
+# index.js
