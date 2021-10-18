@@ -18,12 +18,14 @@
     "typescript": "^4.4.4"
   },
   "scripts": {
-    "build": "esbuild index.ts --bundle --outfile=index.js --platform=node",
-    "build-client": "esbuild client.tsx --bundle --outfile=client.js",
+    "build-server": "esbuild ./example/server/index.ts --bundle --outfile=./example/server/index.js --platform=node",
+    "build-client": "esbuild ./example/client/client.tsx --bundle --outfile=./example/client/client.js",
+    "serve-client": "http-server ./example/client/",
     "start": "node index.js",
     "dev": "ts-node-dev index.ts"
   },
   "devDependencies": {
+    "http-server": "^13.0.2",
     "ts-node-dev": "^1.1.8"
   }
 }
