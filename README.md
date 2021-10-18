@@ -35,3 +35,10 @@ Client:
 const result = await Call<HelloWorldRPC>('hello', { world: 'Neptune' })
 console.log(result.message) // Hello Neptune
 ```
+
+
+## Example
+See examples directory for full example.
+
+## License
+MIT
