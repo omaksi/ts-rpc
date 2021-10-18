@@ -50,16 +50,30 @@ export const Call = async <T extends GenericRPC>(
   params: T['params']
 ): Promise<T['result']> => {
   try {
-    const response = await fetch(`http://localhost:3000/`, {
+    const response = await fetch(config.url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ jsonrpc: '2.0', method, params }),
+      body: JSON.stringify({ jsonrpc: config.jsonRpcHeader || undefined, method, params }),
     })
     const json = await response.json()
     return json
   } catch (error) {
     console.error(error)
   }
+}
+
+type Config = {
+  url?: string
+  jsonRpcHeader?: string | false
+}
+
+const config: Config = {
+  url: `http://localhost:1000/`,
+  jsonRpcHeader: '2.0',
+}
+
+export const RPCConfig = async (newConfig: Config) => {
+  Object.assign(config, newConfig)
 }

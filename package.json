@@ -22,7 +22,7 @@
     "build-client": "esbuild ./example/client/client.tsx --bundle --outfile=./example/client/client.js",
     "serve-client": "http-server ./example/client/",
     "start": "node index.js",
-    "dev": "ts-node-dev index.ts"
+    "dev": "ts-node-dev ./example/server/index.ts"
   },
   "devDependencies": {
     "http-server": "^13.0.2",

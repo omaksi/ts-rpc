@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import type { HelloWorldRPC } from '../types'
-import { Call } from '../../lib/lib'
+import { RPCConfig, Call } from '../../lib/lib'
+
+RPCConfig({
+  url: `http://localhost:3000/`,
+  jsonRpcHeader: false,
+})
 
 const HelloWorld = () => {
   const [message, setMessage] = useState('Loading...')

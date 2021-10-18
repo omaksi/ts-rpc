@@ -1,5 +1,5 @@
 import * as express from 'express'
-import cors from 'cors'
+import * as cors from 'cors'
 import { RpcHandlerMiddleware } from '../../lib/lib'
 import type { HelloWorldRPC } from '../types'
 import type { Handle } from '../../lib/lib'
